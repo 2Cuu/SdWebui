@@ -17,7 +17,7 @@ jobs:
 
       - name: Add Model Name
         run: |
-          sed -i '1i model = "defmix_v2_webui_colab.ipynb" #@param [${{ steps.filenames.outputs.filenames }}]' defmix_v2_webui_colab.ipynb
+          sed -i '1i model = "defmix_v2_webui_colab.ipynb" #@param ["${{ steps.filenames.outputs.filenames }}"]' defmix_v2_webui_colab.ipynb
 
       - name: Commit Changes
         run: |
