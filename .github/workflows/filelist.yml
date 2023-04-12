@@ -16,11 +16,11 @@ jobs:
       - name: Get file names
         run: |
           curl -s https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly | grep "name" | cut -d '"' -f 4 > filenames.txt
-      - name: Get aria2c lines
+      - name: Get lines containing "models/Stable-diffusion -o"
         run: |
           mkdir -p tmp
           while read -r filename; do
-            curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep -m 1 "!aria2c" >> tmp/aria2c_lines.txt
+            curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" >> tmp/aria2c_lines.txt
           done < filenames.txt
       - name: Commit and push changes
         run: |
