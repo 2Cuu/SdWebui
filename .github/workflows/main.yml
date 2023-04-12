@@ -10,30 +10,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-        
-      - name: Delete existing aria2c lines file
-        run: rm -f aria2c_lines.txt
-
-      - name: Create aria2c lines file
-        run: touch aria2c_lines.txt
-        
-      - name: Get list of files
-        id: list_files
-        run: |
-          repository_url="https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly"
-          files=$(curl -s "$repository_url" | jq -r '.[].name' | sed 's/^/"/;s/$/"/' | tr '\n' ',')
-          echo "${files%?}" > files.txt
-          
-      - name: Extract aria2c lines
-        id: extract_lines
-        run: |
-          while read -r files; do
-            last_line=$(curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$files" | tac | awk '/aria2c/ {print NR; exit}')
-            if [ -n "$last_line" ]; then
-              tail -n +"$last_line" "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$files" | awk '{print} /^$/ {exit}' >> aria2c_lines.txt
-            fi
-          done < files.txt
-          
+    
       - name: Download Colab File
         run: wget -O defmix_v2_webui_colab.ipynb https://github.com/camenduru/stable-diffusion-webui-colab/raw/main/nightly/defmix_v2_webui_colab.ipynb
 
@@ -47,8 +24,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add aria2c_lines.txt
-          git add files.txt
           git add defmix_v2_webui_colab.ipynb
           git commit -am "Remove specified keywords from Colab file"
       
