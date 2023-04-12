@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main  
+      
 jobs:
   remove-keywords:
     runs-on: ubuntu-latest
