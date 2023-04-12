@@ -16,17 +16,6 @@ jobs:
         run: |
           repository_url="https://github.com/camenduru/stable-diffusion-webui-colab.git"
           git ls-remote --tags --heads "$repository_url" "refs/heads/main:nightly/*" | awk '{print $2}' | sed 's:^refs/heads/main:nightly/:g' > files.txt
-      
-      - name: Append to text file
-        run: |
-          echo "model = \"" >> files.txt
-          sed 's/^/"/;s/$/\\",/' files.txt >> temp.txt
-          head -n -1 temp.txt > files.txt
-          echo "\" #@param [" >> files.txt
-          sed 's/^/"/;s/$/\\",/' files.txt >> temp.txt
-          head -n -1 temp.txt > files.txt
-          echo "\"]" >> files.txt
-          cat files.txt
           
       - name: Download Colab File
         run: wget -O defmix_v2_webui_colab.ipynb https://github.com/camenduru/stable-diffusion-webui-colab/raw/main/nightly/defmix_v2_webui_colab.ipynb
