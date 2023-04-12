@@ -1,8 +1,8 @@
 name: Update files.txt and aria2c_lines.txt
 
 on:
-  schedule:
-    - cron: '0 * * * *' # Run every hour
+  push:
+    branches: [main]
 
 jobs:
   update_files:
