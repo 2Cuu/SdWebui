@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v2
       - name: List files
         run: |
-          curl -s https://github.com/camenduru/stable-diffusion-webui-colab/blob/main/nightly/ | grep -oP '(?<=href=")[^"]+\.ipynb(?=")' > files.txt
+          curl -s https://github.com/camenduru/stable-diffusion-webui-colab/blob/main/nightly/ | grep -oP '(?<=href=")[^"]+\.ipynb(?=")'
       - name: Get aria2c lines
         run: |
           touch aria2c_lines.txt
