@@ -14,9 +14,7 @@ jobs:
       - name: Get list of files
         id: list_files
         run: |
-          repository_url="https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly"
-          files=$(curl -s "$repository_url" | jq -r '.[].name')
-          echo "$files" > files.txt
+          curl -s "https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly?ref=main" | jq -r '.[] | select(.type == "file") | .name' > files.txt
 
       - name: Extract aria2c lines
         id: extract_lines
