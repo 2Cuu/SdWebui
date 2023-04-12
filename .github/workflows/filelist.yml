@@ -1,39 +1,21 @@
-name: Get Files and Write to Text File
+name: Update files.txt
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  get_files:
+  update_files:
     runs-on: ubuntu-latest
     steps:
-    - name: Get Files and Write to Text File
-      run: |
-        #!/bin/bash
-
-        URL="https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/"
-        FILES=$(curl -s $URL | grep -oE "href=\"[^\"]+\"" | sed 's/href=//' | sed 's/\"//')
-
-        echo "The following files were found:"
-        for f in $FILES; do
-            echo $f
-        done
-
-        echo ""
-
-        echo "Writing the list of files to files.txt..."
-        for f in $FILES; do
-            echo $f >> files.txt
-        done
-
-        echo "Done."
-
-    - name: Commit changes
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: Update files.txt
-        commit_options: '--author "GitHub Action <action@github.com>"'
-        file_pattern: './*'
-        commit_user_name: github-actions[bot]
-        commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: List files
+        run: |
+          curl -s https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly > files.txt
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update files.txt
+          commit_options: '--author "GitHub Action <action@github.com>"'
+          file_pattern: './*.txt'
