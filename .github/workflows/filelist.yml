@@ -18,8 +18,9 @@ jobs:
           while read -r filename; do
             url="https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename"
             aria2c_output="$(curl -s $url | tail -n1 | grep -o '!aria2c.*')"
-            echo "$aria2c_output" >> aria2c_lines.txt
+            echo "$filename: $aria2c_output" >> aria2c_lines.txt
           done < files.txt
+
       - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"
