@@ -9,14 +9,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      
       - name: Get list of files
         id: list_files
         run: |
-          cd ./nightly
-          find . -type f > ../files.txt
+          repository_url="https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly"
+          files=$(curl -s "$repository_url" | jq -r '.[].name')
+          printf "%s\n" "${files[@]}" > files.txt
       
       - name: Append to text file
         run: |
