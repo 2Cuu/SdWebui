@@ -10,6 +10,10 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
+      - name: Configure Git
+        run: |
+          git config --global user.email "117187256+2Cuu@users.noreply.github.com"
+          git config --global user.name "2Cuu"
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Install Python and Jupyter Notebook
@@ -25,10 +29,6 @@ jobs:
           git add notebook.ipynb
           git commit -m "Update notebook"
           git push
-      - name: Configure Git
-        run: |
-          git config --global user.email "117187256+2Cuu@users.noreply.github.com"
-          git config --global user.name "2Cuu"
       - name: Pull changes from repository
         uses: actions/checkout@v2
       - name: Push changes to repository
