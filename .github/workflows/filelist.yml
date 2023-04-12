@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create aria2c lines file
-        run: touch aria2c_lines.txt
+        run: rm -f aria2c_lines.txt && touch aria2c_lines.txt
 
       - name: Get list of files
         id: list_files
@@ -21,11 +21,10 @@ jobs:
       - name: Extract aria2c lines
         id: extract_lines
         run: |
-           curl -s "https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly" | jq -r '.[] | select(.type == "file") | .name' > files.txt
-           while read -r filename; do
-              last_line=$(curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | tac | awk '/aria2c/ {print NR; exit}')
-              if [ -n "$last_line" ]; then
-                 tail -n +"$last_line" "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | awk '{print} /^$/ {exit}' >> aria2c_lines.txt
-              fi
-           done < files.txt
-
+          curl -s "https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly" | jq -r '.[] | select(.type == "file") | .name' > files.txt
+          while read -r filename; do
+            last_line=$(curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | tac | awk '/aria2c/ {print NR; exit}')
+            if [ -n "$last_line" ]; then
+              tail -n +"$last_line" "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | awk '{print} /^$/ {exit}' >> aria2c_lines.txt
+            fi
+          done < files.txt
