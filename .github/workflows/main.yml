@@ -36,6 +36,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git add files.txt
           git add defmix_v2_webui_colab.ipynb
           git commit -am "Remove specified keywords from Colab file"
       
