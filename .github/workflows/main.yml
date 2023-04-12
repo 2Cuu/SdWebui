@@ -1,8 +1,7 @@
-name: Remove Keywords from Colab File
+name: Update File List
 on:
-  push:
-    branches:
-      - main  
+  schedule:
+    - cron: '0 * * * *' # Run every hour
   
 jobs:
   remove-keywords:
