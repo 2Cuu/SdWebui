@@ -21,16 +21,14 @@ jobs:
           mkdir -p tmp
           first=true
           while read -r filename; do
-            if [ "$first" = true ]; then
-              echo "if model == \"$filename\":"
-              first=false
-            else
-              echo "    elif model == \"$filename\":"
-            fi
-            curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed 's/^[\t ]*//;s/"//g' | tr -d '\n' >> tmp/aria2c_lines.txt
-            echo >> tmp/aria2c_lines.txt
-          done < filenames.txt
-
+              if [ "$first" = true ]; then
+                echo "if model == \"$filename\":"
+                first=false
+              else
+                echo "elif model == \"$filename\":"
+              fi
+                curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed 's/^[\t ]*//;s/"//g' | tr -d '\n'
+          done < filenames.txt >> tmp/aria2c_lines.txt
       - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"
