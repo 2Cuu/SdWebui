@@ -20,11 +20,6 @@ jobs:
       - name: Remove Keywords
         run: sed -i '/controlnet\|run_n_times\|sd-webui-additional-networks\|openpose-editor\|depth-lib\|posex/d' defmix_v2_webui_colab.ipynb
 
-      - name: Commit Changes
-        run: |
-          git add defmix_v2_webui_colab.ipynb
-          git commit -m "Remove specified keywords from Colab file"
-      
       - name: Pull Changes
         run: git pull
       
