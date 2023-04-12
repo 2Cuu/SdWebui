@@ -1,39 +1,31 @@
-name: Update Notebook
-
+name: Remove Keywords from Colab File
 on:
-  schedule:
-    - cron: "0 0 * * *"
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  update:
+  remove-keywords:
     runs-on: ubuntu-latest
     steps:
-      - name: Configure Git
-        run: |
-          git config --global user.email "117187256+2Cuu@users.noreply.github.com"
-          git config --global user.name "2Cuu"
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v2
-      - name: Install Python and Jupyter Notebook
+
+      - name: Download Colab File
+        run: wget -O defmix_v2_webui_colab.ipynb https://github.com/camenduru/stable-diffusion-webui-colab/raw/main/nightly/defmix_v2_webui_colab.ipynb
+
+      - name: Remove Keywords
+        run: sed -i '/controlnet\|run_n_times\|sd-webui-additional-networks\|openpose-editor\|depth-lib\|posex/d' defmix_v2_webui_colab.ipynb
+
+      - name: Commit Changes
         run: |
-          sudo apt-get update
-          sudo apt-get install python3 python3-pip
-          pip3 install notebook
-      - name: Download Notebook
-        run: |
-          wget -O notebook.ipynb https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/defmix_v2_webui_colab.ipynb
-          sed -i '/^!aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https:\/\/huggingface\.co\/ckpt\/ControlNet/d' notebook.ipynb
-          sed -i '/^!git clone \(https:\/\/github\.com\/kohya-ss\/sd-webui-additional-networks\|https:\/\/github\.com\/Mikubill\/sd-webui-controlnet\|https:\/\/github\.com\/fkunn1326\/openpose-editor\|https:\/\/github\.com\/jexom\/sd-webui-depth-lib\|https:\/\/github\.com\/hnmr293\/posex\) /d' notebook.ipynb
-          git add notebook.ipynb
-          git commit -m "Update notebook"
-          git pull
-          git push
-      - name: Pull changes from repository
-        uses: actions/checkout@v2
-      - name: Push changes to repository
-        run: |
-          git add notebook.ipynb
-          git commit -m "Remove aria2c and git clone lines"
-          git push
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add defmix_v2_webui_colab.ipynb
+          git commit -m "Remove specified keywords from Colab file"
+      
+      - name: Push Changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
