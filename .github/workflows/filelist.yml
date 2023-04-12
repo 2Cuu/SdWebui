@@ -1,31 +1,29 @@
-name: Get aria2c lines
+name: Update aria2c lines
 
 on:
   push:
     branches: [main]
 
 jobs:
-  get_aria2c_lines:
+  update_aria2c_lines:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: List files
-        id: list_files
         run: |
           curl -s https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly?ref=main \
-          | jq -r '.[].download_url' > file_urls.txt
-      - name: Download files
+          | jq -r '.[] | .download_url' > files.txt
+
+      - name: Extract aria2c lines
         run: |
-          while read -r url; do
-            curl -s -O -L "$url"
-          done < file_urls.txt
-      - name: Get aria2c lines
-        run: |
-          for file in *.ipynb; do
-            aria2c_line="$(tail -n 1 "$file" | grep -o '!aria2c.*')"
-            echo "$aria2c_line" >> aria2c_lines.txt
-          done
+          while read -r file; do
+            curl -s "$file" \
+            | grep -n -m 1 '!aria2c' \
+            | cut -d':' -f2- >> aria2c_lines.txt
+          done < files.txt
+
       - name: Commit and push changes
         env:
           COMMIT_MSG: "Update aria2c lines"
