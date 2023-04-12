@@ -19,9 +19,11 @@ jobs:
       - name: Get lines containing "models/Stable-diffusion -o"
         run: |
           mkdir -p tmp
+          echo "if model == filename:"
           while read -r filename; do
-            curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" >> tmp/aria2c_lines.txt
-          done < filenames.txt
+            echo "    # $filename:"
+            curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed 's/^/    /'
+          done < filenames.txt >> tmp/aria2c_lines.txt
       - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"
