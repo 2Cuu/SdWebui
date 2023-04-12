@@ -10,6 +10,10 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Git
+        run: |
+         git config --global user.email "ajitamtojzed@gmail.com"
+         git config --global user.name "2Cuu"
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Install Python and Jupyter Notebook
