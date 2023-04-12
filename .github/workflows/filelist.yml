@@ -1,23 +1,29 @@
-name: Update files.txt
+name: Get Aria2c lines from notebooks
 
 on:
   push:
     branches: [main]
 
 jobs:
-  update_files:
+  get_aria2c_lines:
     runs-on: ubuntu-latest
-    env:
-      COMMIT_MSG: "Update files.txt"
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: List files
+      - name: Get list of notebooks
         run: |
-          curl -s https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly | jq -r '.[].name' > files.txt
+          curl -s https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly | jq -r '.[].name' > notebooks.txt
+      - name: Process notebooks
+        run: |
+          while read notebook; do
+            last_line="$(tail -1 "nightly/$notebook")"
+            if [[ "$last_line" == *!aria2c* ]]; then
+              echo "$last_line" >> aria2c_lines.txt
+            fi
+          done < notebooks.txt
       - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -m "${{ env.COMMIT_MSG }}" -a --author "GitHub Action <action@github.com> (automated commit)"
+          git commit -m "Update aria2c_lines.txt" -a --author "GitHub Action <action@github.com> (automated commit)"
           git push
