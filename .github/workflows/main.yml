@@ -22,6 +22,8 @@ jobs:
       
       - name: Check for Changes
         run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
           git diff-index --quiet HEAD || \
           git commit -am "Automated update $(date +'%Y-%m-%d %H:%M:%S')" || \
           exit 0
