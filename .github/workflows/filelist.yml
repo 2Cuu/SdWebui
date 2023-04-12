@@ -1,4 +1,4 @@
-name: Update files.txt
+name: Update files.txt and aria2c_lines.txt
 
 on:
   push:
@@ -10,21 +10,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: List files
+      - name: Get file names
         run: |
-          curl -s https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/git/trees/main?recursive=1 | grep -o -E '\w+\.ipynb' > files.txt
+          curl -s https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly | grep "name" | cut -d '"' -f 4 > filenames.txt
       - name: Get aria2c lines
         run: |
+          mkdir -p tmp
           while read -r filename; do
-            url="https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename"
-            aria2c_output="$(curl -s $url | tail -n1 | grep -o '!aria2c.*')"
-            echo "$filename: $aria2c_output" >> aria2c_lines.txt
-          done < files.txt
-
+            curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep -m 1 "!aria2c" >> tmp/aria2c_lines.txt
+          done < filenames.txt
       - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add files.txt aria2c_lines.txt
+          git add filenames.txt tmp/aria2c_lines.txt
           git commit -m "Update files.txt and aria2c_lines.txt" -a --author "GitHub Action <action@github.com> (automated commit)"
           git push
