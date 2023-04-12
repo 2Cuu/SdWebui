@@ -1,7 +1,8 @@
-name: Update File List
+name: Remove Keywords from Colab File
 on:
-  schedule:
-    - cron: '0 * * * *' # Run every hour
+  push:
+    branches:
+      - main  
   
 jobs:
   remove-keywords:
@@ -9,7 +10,19 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
+        
+      - name: Get list of files
+        id: list_files
+        run: |
+          repository_url="https://github.com/camenduru/stable-diffusion-webui-colab.git"
+          git ls-remote --tags --heads "$repository_url" "refs/heads/main:nightly/*" | awk '{print $2}' | sed 's:^refs/heads/main:nightly/:g' > files.txt
+      
+      - name: Append to text file
+        run: |
+          sed -i 's/^/"/;s/$/\\",/' files.txt
+          echo "model = \"\" #@param [\"list1\", \"list2\"]" >> files.txt
+          cat files.txt
+          
       - name: Download Colab File
         run: wget -O defmix_v2_webui_colab.ipynb https://github.com/camenduru/stable-diffusion-webui-colab/raw/main/nightly/defmix_v2_webui_colab.ipynb
 
