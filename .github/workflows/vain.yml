@@ -1,0 +1,35 @@
+name: Add filenames to notebook
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  add_filenames:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Read filenames from file
+      id: read_filenames
+      run: |
+        echo "::set-output name=filenames::$(cat filenames.txt)"
+
+    - name: Add filenames to notebook
+      run: |
+        filenames="${{ steps.read_filenames.outputs.filenames }}"
+        sed -i "1s/^/model = \\"${filenames//\\//\\\\}\\\" #@param [\\"${filenames//\\//\\\\}\\"]\\n\\n/" defmix_v2_webui_colab.ipynb
+
+    - name: Commit changes
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -a -m "Add filenames to notebook" || true
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: main
