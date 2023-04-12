@@ -1,32 +1,37 @@
-name: Update aria2c_lines.txt
+name: Get aria2c lines
 
 on:
   push:
     branches: [main]
 
 jobs:
-  update_files:
+  get_aria2c_lines:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: List files
+        id: list_files
         run: |
-          curl -s https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly | jq -r '.[].name' > files.txt
-      - name: Search for aria2c commands
+          curl -s https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly?ref=main \
+          | jq -r '.[].download_url' > file_urls.txt
+      - name: Download files
         run: |
-          while read -r filename; do
-            if [[ "$filename" == *".ipynb"* ]]; then
-              last_command=$(tail -n 1 "$filename" | grep -oP '!\K[^|]*aria2c[^|]*')
-              if [[ -n "$last_command" ]]; then
-                echo "$last_command" >> aria2c_lines.txt
-              fi
-            fi
-          done < files.txt
+          while read -r url; do
+            curl -s -O -L "$url"
+          done < file_urls.txt
+      - name: Get aria2c lines
+        run: |
+          for file in *.ipynb; do
+            aria2c_line="$(tail -n 1 "$file" | grep -o '!aria2c.*')"
+            echo "$aria2c_line" >> aria2c_lines.txt
+          done
       - name: Commit and push changes
+        env:
+          COMMIT_MSG: "Update aria2c lines"
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add aria2c_lines.txt
-          git commit -m "Update aria2c_lines.txt" --author "GitHub Action <action@github.com> (automated commit)"
+          git commit -m "${{ env.COMMIT_MSG }}" -a --author "GitHub Action <action@github.com> (automated commit)"
           git push
