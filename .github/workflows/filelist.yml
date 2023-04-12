@@ -1,4 +1,4 @@
-name: Update files.txt
+name: Update files.txt and aria2c_lines.txt
 
 on:
   push:
@@ -12,30 +12,24 @@ jobs:
         uses: actions/checkout@v2
       - name: List files
         run: |
-          curl -s https://github.com/camenduru/stable-diffusion-webui-colab/tree/main/nightly | grep -oP '(?<=href=")[^"]*(?=")' | grep -E '\.ipynb$' | grep -oP '[^/]+$' > files.txt
-      - name: Read files.txt and copy aria2c lines
+          curl -s https://github.com/camenduru/stable-diffusion-webui-colab/blob/main/nightly/ | grep -oP '(?<=href=")[^"]+\.ipynb(?=")' > files.txt
+      - name: Get aria2c lines
         run: |
-          rm -f aria2c_lines.txt
-          while read -r file; do
-            url="https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$file"
-            aria2c_line=$(curl -s "$url" | grep -n "!aria2c" | tail -n 1 | cut -d ":" -f 1)
-            if [[ -n "$aria2c_line" ]]; then
-              ((aria2c_line--))
-              while true; do
-                last_line=$(curl -s "$url" | sed -n "$aria2c_line{p;q;}")
-                if [[ -n "$last_line" ]]; then
-                  echo "$last_line" >> aria2c_lines.txt
-                  ((aria2c_line--))
-                else
-                  echo "" >> aria2c_lines.txt
-                  break
-                fi
-              done
+          touch aria2c_lines.txt
+          while read -r filename; do
+            url="https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename"
+            aria2c_line=$(curl -s $url | grep -n "!aria2c" | cut -d ":" -f 1)
+            if [ -n "$aria2c_line" ]; then
+              start_line=$((aria2c_line + 1))
+              end_line=$((start_line + 1))
+              sed -n "${start_line},${end_line}p" $url | sed -e '/^$/q' >> aria2c_lines.txt
+              echo "" >> aria2c_lines.txt
             fi
           done < files.txt
       - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git add files.txt aria2c_lines.txt
           git commit -m "${{ env.COMMIT_MSG }}" -a --author "GitHub Action <action@github.com> (automated commit)"
           git push
