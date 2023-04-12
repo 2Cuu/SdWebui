@@ -17,7 +17,12 @@ jobs:
         run: |
           mkdir -p tmp
           while read -r filename; do
-            curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep -m 1 "!aria2c" >> tmp/aria2c_lines.txt
+            aria2c_page=$(curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename")
+            last_line=$(echo "$aria2c_page" | grep -n "!aria2c" | tail -1 | cut -d ':' -f 1)
+            if [ -n "$last_line" ]; then
+              last_line=$((last_line-1))
+              echo "$aria2c_page" | head -n $last_line | sed -e 's/[[:space:]]*$//' >> tmp/aria2c_lines.txt
+            fi
           done < filenames.txt
       - name: Commit and push changes
         run: |
