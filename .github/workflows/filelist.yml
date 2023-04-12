@@ -13,8 +13,9 @@ jobs:
       - name: List files
         run: |
           curl -s https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly > files.txt
-
       - name: Commit and push changes
+        env:
+          COMMIT_MSG: "Automated commit"
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
