@@ -27,3 +27,9 @@ jobs:
               curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | tail -n +"$last_line" | awk '{print} /^$/ {exit}' >> aria2c_lines.txt
             fi
           done < files.txt
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Update aria2c_lines.txt"
+          file_pattern: aria2c_lines.txt
