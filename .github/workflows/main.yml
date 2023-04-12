@@ -1,0 +1,27 @@
+name: Update Notebook
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  push:
+    branches: [ main ]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install Python and Jupyter Notebook
+        run: |
+          sudo apt-get update
+          sudo apt-get install python3 python3-pip
+          pip3 install notebook
+      - name: Download Notebook
+        run: |
+          wget -O notebook.ipynb https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/defmix_v2_webui_colab.ipynb
+          sed -i '/^!aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https:\/\/huggingface\.co\/ckpt\/ControlNet/d' notebook.ipynb
+          sed -i '/^!git clone \(https:\/\/github\.com\/kohya-ss\/sd-webui-additional-networks\|https:\/\/github\.com\/Mikubill\/sd-webui-controlnet\|https:\/\/github\.com\/fkunn1326\/openpose-editor\|https:\/\/github\.com\/jexom\/sd-webui-depth-lib\|https:\/\/github\.com\/hnmr293\/posex\) /d' notebook.ipynb
+          git add notebook.ipynb
+          git commit -m "Update notebook"
+          git push
