@@ -15,7 +15,7 @@ jobs:
         id: list_files
         run: |
           repository_url="https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly"
-          files=$(curl -s "$repository_url" | jq -r '.[].name' | tr '\n' ',')
+          files=$(curl -s "$repository_url" | jq -r '.[].name' | sed 's/^/"/;s/$/"/' | tr '\n' ',')
           echo "${files%?}" > files.txt
           
       - name: Download Colab File
