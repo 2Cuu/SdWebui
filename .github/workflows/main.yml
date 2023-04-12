@@ -23,6 +23,13 @@ jobs:
       - name: Pull Changes
         run: git pull
       
+      - name: Commit Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add defmix_v2_webui_colab.ipynb
+          git commit -m "Remove specified keywords from Colab file"
+      
       - name: Push Changes
         uses: ad-m/github-push-action@v0.6.0
         with:
