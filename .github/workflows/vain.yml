@@ -1,38 +1,27 @@
-name: Add filenames to notebook
-
+name: Add Model Name to defmix_v2_webui_colab.ipynb
 on:
   push:
     branches:
       - main
-
 jobs:
-  add_filenames:
+  add_model_name:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Read filenames from file
-      id: read_filenames
-      run: |
-        echo "::set-output name=filenames::$(cat filenames.txt)"
+      - name: Read Filenames
+        id: filenames
+        run: |
+          echo "::set-output name=filenames::$(cat filenames.txt | paste -sd ',' -)"
 
-    - name: Add filenames to notebook
-      run: |
-        filenames="${{ steps.read_filenames.outputs.filenames }}"
-        IFS=$'\n' # set the internal field separator to newline
-        for filename in ${filenames}; do
-          sed -i "1s/^/model = \\"${filenames//\\//\\\\}\\\" #@param [\\"${filenames//\\//\\\\}\\"]\\n\\n/" defmix_v2_webui_colab.ipynb
-        done
+      - name: Add Model Name
+        run: |
+          sed -i "model = \"defmix_v2_webui_colab.ipynb\" #@param [${{ steps.filenames.outputs.filenames }}]" defmix_v2_webui_colab.ipynb
 
-    - name: Commit changes
-      run: |
-        git config --local user.email "actions@github.com"
-        git config --local user.name "GitHub Action"
-        git commit -a -m "Add filenames to notebook" || true
-
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: main
+      - name: Commit Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "Add model name to defmix_v2_webui_colab.ipynb"
+          git push
