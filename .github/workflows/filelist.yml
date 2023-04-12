@@ -1,29 +1,32 @@
-name: Get Aria2c lines from notebooks
+name: Update aria2c_lines.txt
 
 on:
   push:
     branches: [main]
 
 jobs:
-  get_aria2c_lines:
+  update_files:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Get list of notebooks
+      - name: List files
         run: |
-          curl -s https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly | jq -r '.[].name' > notebooks.txt
-      - name: Process notebooks
+          curl -s https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly | jq -r '.[].name' > files.txt
+      - name: Search for aria2c commands
         run: |
-          while read notebook; do
-            last_line="$(tail -1 "nightly/$notebook")"
-            if [[ "$last_line" == *!aria2c* ]]; then
-              echo "$last_line" >> aria2c_lines.txt
+          while read -r filename; do
+            if [[ "$filename" == *".ipynb"* ]]; then
+              last_command=$(tail -n 1 "$filename" | grep -oP '!\K[^|]*aria2c[^|]*')
+              if [[ -n "$last_command" ]]; then
+                echo "$last_command" >> aria2c_lines.txt
+              fi
             fi
-          done < notebooks.txt
+          done < files.txt
       - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -m "Update aria2c_lines.txt" -a --author "GitHub Action <action@github.com> (automated commit)"
+          git add aria2c_lines.txt
+          git commit -m "Update aria2c_lines.txt" --author "GitHub Action <action@github.com> (automated commit)"
           git push
