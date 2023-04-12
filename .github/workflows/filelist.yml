@@ -21,8 +21,8 @@ jobs:
           mkdir -p tmp
           echo "if model == filename:"
           while read -r filename; do
-            echo "    # $filename:"
-            curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed 's/^/    /'
+            echo "    elif model == \"$filename\":"
+            curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed 's/^/        /'
           done < filenames.txt >> tmp/aria2c_lines.txt
       - name: Commit and push changes
         run: |
