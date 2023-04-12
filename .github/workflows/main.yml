@@ -22,7 +22,9 @@ jobs:
           git config --local user.name "GitHub Action"
           git add defmix_v2_webui_colab.ipynb
           git commit -m "Remove specified keywords from Colab file"
-          git pull
+      
+      - name: Pull Changes
+        run: git pull
       
       - name: Push Changes
         uses: ad-m/github-push-action@v0.6.0
