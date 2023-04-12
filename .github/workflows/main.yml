@@ -1,7 +1,8 @@
-name: Update File List
+name: Update
+
 on:
-  schedule:
-    - cron: '0 * * * *' # Run every hour
+  push:
+    branches: [main]
   
 jobs:
   remove-keywords:
@@ -16,6 +17,26 @@ jobs:
       - name: Remove Keywords
         run: sed -i '/controlnet\|run_n_times\|sd-webui-additional-networks\|openpose-editor\|depth-lib\|posex/d' defmix_v2_webui_colab.ipynb
       
+      - name: Delete aria2c_lines.txt
+        run: |
+          rm tmp/aria2c_lines.txt
+      - name: Get file names
+        run: |
+          curl -s https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly | grep "name" | cut -d '"' -f 4 > filenames.txt
+      - name: Get lines containing "models/Stable-diffusion -o"
+        run: |
+          mkdir -p tmp
+          first=true
+          while read -r filename; do
+              if [ "$first" = true ]; then
+                echo "if model == \"$filename\":"
+                first=false
+              else
+                echo "elif model == \"$filename\":"
+              fi
+                curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed 's/^/        /' | sed 's/"//' | sed 's/\\n",//'
+          done < filenames.txt >> tmp/aria2c_lines.txt
+      
       - name: Pull Changes
         run: git pull
       
@@ -24,7 +45,8 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add defmix_v2_webui_colab.ipynb
-          git commit -am "Remove specified keywords from Colab file"
+          git add filenames.txt tmp/aria2c_lines.txt
+          git commit -am "Fishxed it"
       
       - name: Push Changes
         uses: ad-m/github-push-action@v0.6.0
