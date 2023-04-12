@@ -14,8 +14,8 @@ jobs:
         run: |
           curl -s https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly > files.txt
       - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Update files.txt
-          commit_options: '--author "GitHub Action <action@github.com>"'
-          file_pattern: './*.txt'
+        run: |
+          git config --global user.email "${{ secrets.EMAIL }}"
+          git config --global user.name "${{ secrets.USERNAME }}"
+          git commit -m "${{ env.COMMIT_MSG }}" -a --author "GitHub Action <action@github.com> (automated commit)"
+          git push
