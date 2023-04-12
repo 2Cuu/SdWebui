@@ -10,10 +10,6 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Git
-        run: |
-         git config --global user.email "ajitamtojzed@gmail.com"
-         git config --global user.name "2Cuu"
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Install Python and Jupyter Notebook
@@ -28,4 +24,15 @@ jobs:
           sed -i '/^!git clone \(https:\/\/github\.com\/kohya-ss\/sd-webui-additional-networks\|https:\/\/github\.com\/Mikubill\/sd-webui-controlnet\|https:\/\/github\.com\/fkunn1326\/openpose-editor\|https:\/\/github\.com\/jexom\/sd-webui-depth-lib\|https:\/\/github\.com\/hnmr293\/posex\) /d' notebook.ipynb
           git add notebook.ipynb
           git commit -m "Update notebook"
+          git push
+      - name: Configure Git
+        run: |
+          git config --global user.email "117187256+2Cuu@users.noreply.github.com"
+          git config --global user.name "2Cuu"
+      - name: Pull changes from repository
+        uses: actions/checkout@v2
+      - name: Push changes to repository
+        run: |
+          git add notebook.ipynb
+          git commit -m "Remove aria2c and git clone lines"
           git push
