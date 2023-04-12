@@ -27,10 +27,10 @@ jobs:
       - name: Extract aria2c lines
         id: extract_lines
         run: |
-          while read -r filename; do
-            last_line=$(curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | tac | awk '/aria2c/ {print NR; exit}')
+          while read -r files; do
+            last_line=$(curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$files" | tac | awk '/aria2c/ {print NR; exit}')
             if [ -n "$last_line" ]; then
-              tail -n +"$last_line" "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | awk '{print} /^$/ {exit}' >> aria2c_lines.txt
+              tail -n +"$last_line" "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$files" | awk '{print} /^$/ {exit}' >> aria2c_lines.txt
             fi
           done < files.txt
           
