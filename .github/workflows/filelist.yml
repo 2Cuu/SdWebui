@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Delete aria2c_lines.txt
+        run: |
+          rm tmp/aria2c_lines.txt
       - name: Get file names
         run: |
           curl -s https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly | grep "name" | cut -d '"' -f 4 > filenames.txt
