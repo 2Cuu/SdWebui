@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Download Colab File
-        run: wget -O defmix_v2_webui_colab.ipynb https://github.com/camenduru/stable-diffusion-webui-colab/raw/main/nightly/abyss_orange_mix_3_webui_colab.ipynb
+        run: wget -O defmix_v2_webui_colab.ipynb https://github.com/camenduru/stable-diffusion-webui-colab/raw/main/nightly/defmix_v2_webui_colab.ipynb
 
       - name: Remove Keywords
         run: sed -i '/controlnet\|run_n_times\|sd-webui-additional-networks\|openpose-editor\|depth-lib\|posex/d' defmix_v2_webui_colab.ipynb
