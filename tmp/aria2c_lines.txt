@@ -1,4 +1,4 @@
-    elif model == "526_mix_webui_colab.ipynb":
+if model == "526_mix_webui_colab.ipynb":
                 "!aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/ckpt/526mix/resolve/main/526mixV14_v14.safetensors -d /content/stable-diffusion-webui/models/Stable-diffusion -o 526mixV14_v14.safetensors\n",
     elif model == "7th_layer_webui_colab.ipynb":
                 "!aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/syaimu/7th_Layer/resolve/main/7th_layer/Abyss_7th_layer.ckpt -d /content/stable-diffusion-webui/models/Stable-diffusion -o Abyss_7th_layer.ckpt\n",
