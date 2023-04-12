@@ -27,7 +27,7 @@ jobs:
               else
                 echo "elif model == \"$filename\":"
               fi
-                curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed 's/^/        /'
+                curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed 's/^/        /' | sed 's/aria2c/aria3c/'
           done < filenames.txt >> tmp/aria2c_lines.txt
       - name: Commit and push changes
         run: |
