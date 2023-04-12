@@ -1,0 +1,25 @@
+name: Add files to text file
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Get list of files
+        id: list_files
+        run: |
+          cd ./nightly
+          find . -type f > ../files.txt
+      
+      - name: Append to text file
+        run: |
+          sed -i 's/^/"/;s/$/\\",/' files.txt
+          echo "model = \"\" #@param [\"list1\", \"list2\"]" >> files.txt
+          cat files.txt
