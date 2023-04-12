@@ -14,8 +14,9 @@ jobs:
       - name: Get list of files
         id: list_files
         run: |
-          repository_url="https://github.com/camenduru/stable-diffusion-webui-colab.git"
-          git ls-remote --tags --heads "$repository_url" "refs/heads/main:nightly/*" | awk '{print $2}' | sed 's:^refs/heads/main:nightly/:g' > files.txt
+          repository_url="https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly"
+          files=$(curl -s "$repository_url" | jq -r '.[].name' | tr '\n' ',')
+          echo "${files%?}" > files.txt
           
       - name: Download Colab File
         run: wget -O defmix_v2_webui_colab.ipynb https://github.com/camenduru/stable-diffusion-webui-colab/raw/main/nightly/defmix_v2_webui_colab.ipynb
