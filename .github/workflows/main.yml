@@ -11,6 +11,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
         
+      - name: Delete existing aria2c lines file
+        run: rm -f aria2c_lines.txt
+
+      - name: Create aria2c lines file
+        run: touch aria2c_lines.txt
+        
       - name: Get list of files
         id: list_files
         run: |
@@ -24,7 +30,7 @@ jobs:
           while read -r filename; do
             last_line=$(curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | tac | awk '/aria2c/ {print NR; exit}')
             if [ -n "$last_line" ]; then
-              tail -n +"$last_line" "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | awk '{print} /^\s*$/{exit}' >> aria2c_lines.txt
+              tail -n +"$last_line" "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | awk '{print} /^$/ {exit}' >> aria2c_lines.txt
             fi
           done < files.txt
           
