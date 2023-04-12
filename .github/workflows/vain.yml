@@ -20,7 +20,10 @@ jobs:
     - name: Add filenames to notebook
       run: |
         filenames="${{ steps.read_filenames.outputs.filenames }}"
-        sed -i "1s/^/model = \\"${filenames//\\//\\\\}\\\" #@param [\\"${filenames//\\//\\\\}\\"]\\n\\n/" defmix_v2_webui_colab.ipynb
+        IFS=$'\n' # set the internal field separator to newline
+        for filename in ${filenames}; do
+          sed -i "1s/^/model = \\"${filename//\\//\\\\}\\\" #@param [\\"${filename//\\//\\\\}\\"]\\n\\n/" defmix_v2_webui_colab.ipynb
+        done
 
     - name: Commit changes
       run: |
