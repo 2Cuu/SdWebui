@@ -28,6 +28,7 @@ jobs:
           sed -i '/^!git clone \(https:\/\/github\.com\/kohya-ss\/sd-webui-additional-networks\|https:\/\/github\.com\/Mikubill\/sd-webui-controlnet\|https:\/\/github\.com\/fkunn1326\/openpose-editor\|https:\/\/github\.com\/jexom\/sd-webui-depth-lib\|https:\/\/github\.com\/hnmr293\/posex\) /d' notebook.ipynb
           git add notebook.ipynb
           git commit -m "Update notebook"
+          git pull
           git push
       - name: Pull changes from repository
         uses: actions/checkout@v2
