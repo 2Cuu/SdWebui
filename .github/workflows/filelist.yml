@@ -1,33 +1,20 @@
-name: Extract aria2c lines from files
+name: Read files
+
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  build:
+  read-files:
     runs-on: ubuntu-latest
     steps:
-      - name: Create aria2c lines file
-        run: touch aria2c_lines.txt
-
-      - name: Get list of files
-        id: list_files
-        run: |
-          curl -s "https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly?ref=main" | jq -r '.[] | select(.type == "file") | .name' > files.txt
-
-      - name: Extract aria2c lines
-        id: extract_lines
-        run: |
-          while read -r filename; do
-            last_line=$(curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | tac | awk '/aria2c/ {print NR; exit}')
-            if [ -n "$last_line" ]; then
-              curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | tail -n +"$last_line" | awk '{print} /^$/ {exit}' >> aria2c_lines.txt
-            fi
-          done < files.txt
-
-      - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Update aria2c_lines.txt"
-          file_pattern: aria2c_lines.txt
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Read files
+      run: |
+        curl -s https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly | awk '{print $NF}' > files.txt
+    - name: Commit changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "Update files.txt"
+        commit_options: "--author 'GitHub Action <action@github.com>'"
