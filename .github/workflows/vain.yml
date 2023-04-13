@@ -16,7 +16,7 @@ jobs:
           echo "::set-output name=filenames::$(cat filenames.txt | paste -sd ',' -)"
       - name: Add Model Name
         run: |
-          sed -i '/!git reset --hard/a         "model = "defmix_v2_webui_colab.ipynb" #@param ["'"$(sed -E 's/$/","/' filenames.txt | tr -d '\n')"']"' defmix_v2_webui_colab.ipynb
+          sed -i '/!git reset --hard/a ^"model = "defmix_v2_webui_colab.ipynb" #@param ["'"$(sed -E 's/$/","/' filenames.txt | tr -d '\n')"']"' defmix_v2_webui_colab.ipynb
       - name: Commit Changes
         run: |
           git config --local user.email "action@github.com"
