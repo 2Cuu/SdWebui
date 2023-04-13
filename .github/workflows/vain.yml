@@ -40,3 +40,9 @@ jobs:
           git config --local user.name "GitHub Action"
           git add filenames.txt tmp/aria2c_lines.txt
           git commit -am "Fishxed it"
+
+      - name: Push Changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
