@@ -12,21 +12,44 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: Download Colab File
+        run: wget -O defmix_v2_webui_colab.ipynb https://github.com/camenduru/stable-diffusion-webui-colab/raw/main/nightly/defmix_v2_webui_colab.ipynb
+
+      - name: Remove Keywords
+        run: sed -i '/controlnet\|run_n_times\|sd-webui-additional-networks\|openpose-editor\|depth-lib\|posex/d' defmix_v2_webui_colab.ipynb
+
+      - name: Replace Colab notebook URL
+        run: sed -i 's~https://colab\.research\.google\.com/github/camenduru/stable-diffusion-webui-colab/blob/main/nightly/defmix_v2_webui_colab\.ipynb~https://colab.research.google.com/github/2Cuu/SdWebui/blob/main/defmix_v2_webui_colab.ipynb~' defmix_v2_webui_colab.ipynb
+
+      - name: Pull Changes
+        run: git pull
+      
+      - name: Commit Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add defmix_v2_webui_colab.ipynb
+          git commit -am "Fishxed it"
+          
+      - name: Output defmix_v2_webui_colab.ipynb
+        run: |
+          sed -i "/!git reset --hard/a\ \ \ \ \ \ \ \ \"model = 'defmix_v2_webui_colab.ipynb' #@param [`cat filenames.txt | sed "s/\(.*\)/'\1',/" | tr -d '\n' | sed 's/,$//'`]\"," defmix_v2_webui_colab.ipynb
+        shell: bash   
 
       - name: Append text to defmix_v2_webui_colab.ipynb
         run: |
           sed -i '/model =/ r tmp/aria2c_lines.txt' defmix_v2_webui_colab.ipynb
 
-      - name: Commit changes
+      - name: Commit Changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add defmix_v2_webui_colab.ipynb
-          git commit -m "Update webui with aria2c lines"
+          git commit -am "Add model name to defmix_v2_webui_colab.ipynb"
           git push
-
-      - name: Upload updated notebook
-        uses: actions/upload-artifact@v2
+      
+      - name: Push Changes
+        uses: ad-m/github-push-action@v0.6.0
         with:
-          name: Updated webui
-          path: defmix_v2_webui_colab.ipynb
+          branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
