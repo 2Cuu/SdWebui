@@ -1,49 +1,32 @@
-name: Update File List
-
+name: Update webui
 
 on:
-  schedule:
-    - cron: '0 0 * * *' # Run every hour
-    
+  push:
+    branches:
+      - main
+
 jobs:
-  remove-keywords:
+  update_webui:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Delete aria2c_lines.txt
+      - name: Append text to defmix_v2_webui_colab.ipynb
         run: |
-          rm tmp/aria2c_lines.txt
-      - name: Get file names
-        run: |
-          curl -s https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly | grep "name" | cut -d '"' -f 4 > filenames.txt
-      - name: Get lines containing "models/Stable-diffusion -o"
-        run: |
-          mkdir -p tmp
-          first=true
-          while read -r filename; do
-              if [ "$first" = true ]; then
-                echo "\"if model == '$filename':\""
-                first=false
-              else
-                echo "\"elif model == '$filename':\""
-              fi
-                curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed 's/^/        /'
-          done < filenames.txt >> tmp/aria2c_lines.txt
-      
-      - name: Pull Changes
-        run: git pull
-      
-      - name: Commit Changes
+          sed -i '/model =/ r Sdwebui/tmp/aria2c_lines.txt' SdWebui/defmix_v2_webui_colab.ipynb
+
+      - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add filenames.txt tmp/aria2c_lines.txt
-          git commit -am "Fishxed it"
+          git add SdWebui/defmix_v2_webui_colab.ipynb
+          git commit -m "Update webui with aria2c lines"
+          git push
 
-      - name: Push Changes
-        uses: ad-m/github-push-action@v0.6.0
+      - name: Upload updated notebook
+        uses: actions/upload-artifact@v2
         with:
-          branch: main
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          name: Updated webui
+          path: SdWebui/defmix_v2_webui_colab.ipynb
