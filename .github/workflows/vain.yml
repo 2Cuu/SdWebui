@@ -1,8 +1,9 @@
 name: Update webuii
 
 on:
-  schedule:
-    - cron: '0 0 * * *' # Run every hour
+  push:
+    branches:
+      - main
 
 jobs:
   update_webui:
