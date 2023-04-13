@@ -43,7 +43,7 @@ jobs:
       
       - name: Output webui_colab.ipynb
         run: |
-          sed -i '/SaAJk33ppFw1/{n;s/^/        "cellView": "form",\n/}' webui_colab.ipynb
+          sed -i '/"id": "SaAJk33ppFw1"/a \        "cellView": "form"' webui_colab.ipynb
           sed -i '/TF_CPP_MIN_LOG_LEVEL/ r add/import.txt' webui_colab.ipynb
           sed -i "/TF_CPP_MIN_LOG_LEVEL/a \ \ \ \ \ \ \ \ \"model = 'defmix_v2_webui_colab.ipynb' #@param [`cat filenames.txt | sed "s/\(.*\)/'\1',/" | tr -d '\n' | sed 's/,$//'`]\"," webui_colab.ipynb
         shell: bash   
