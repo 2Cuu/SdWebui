@@ -1,9 +1,10 @@
 name: Update File List
 
+
 on:
-  push:
-    branches: [main]
-  
+  schedule:
+    - cron: '0 0 * * *' # Run every hour
+    
 jobs:
   remove-keywords:
     runs-on: ubuntu-latest
