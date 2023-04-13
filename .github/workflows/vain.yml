@@ -25,7 +25,6 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add defmix_v2_webui_colab.ipynb
-          git add filenames.txt tmp/aria2c_lines.txt
           git commit -am "Fishxed it"
 
       - name: Output defmix_v2_webui_colab.ipynb
