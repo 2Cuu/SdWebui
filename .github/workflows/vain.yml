@@ -13,7 +13,7 @@ jobs:
 
       - name: Output defmix_v2_webui_colab.ipynb
         run: |
-          sed -i "/!git reset --hard/a\ \ \ \ \ \ \ \ \"model = 'defmix_v2_webui_colab.ipynb' #@param [`cat filenames.txt | sed "s/\(.*\)/'\1',/" | tr -d '\n' | sed 's/,$//'`]\"" defmix_v2_webui_colab.ipynb
+          sed -i "/!git reset --hard/a\ \ \ \ \ \ \ \ \"model = 'defmix_v2_webui_colab.ipynb' #@param [`cat filenames.txt | sed "s/\(.*\)/'\1',/" | tr -d '\n' | sed 's/,$//'`]\"," defmix_v2_webui_colab.ipynb
         shell: bash
 
       - name: Commit Changes
