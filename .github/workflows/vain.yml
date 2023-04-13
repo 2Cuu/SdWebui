@@ -1,23 +1,20 @@
-name: Add Model Name to defmix_v2_webui_colab.ipynb
+name: Output defmix_v2_webui_colab.ipynb workflow
+
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+
 jobs:
-  add_model_name:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Read Filenames
-        id: filenames
+      - name: Output defmix_v2_webui_colab.ipynb
         run: |
-          echo "::set-output name=filenames::$(cat filenames.txt | paste -sd ',' -)"
-      - name: Add Model Name
-        run: |
-          sed -i '/!git reset --hard/a \ \ \ \ \ \ \ \ \"model = \'defmix_v2_webui_colab.ipynb\' #@param ['\''$(sed -E '\''s/$/,'\'\'' filenames.txt | tr -d '\''\n'\'')'\'']\"' defmix_v2_webui_colab.ipynb
-
+          sed -i "/!git reset --hard/a\model = 'defmix_v2_webui_colab.ipynb' #@param [`cat filenames.txt | sed "s/\(.*\)/'\1',/" | tr -d '\n' | sed 's/,$//'`]" defmix_v2_webui_colab.ipynb
+        shell: bash
 
       - name: Commit Changes
         run: |
