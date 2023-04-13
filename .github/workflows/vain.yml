@@ -11,11 +11,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Download Colab File
+        run: wget -O defmix_v2_webui_colab.ipynb https://github.com/camenduru/stable-diffusion-webui-colab/raw/main/nightly/defmix_v2_webui_colab.ipynb
+
+      - name: Remove Keywords
+        run: sed -i '/controlnet\|run_n_times\|sd-webui-additional-networks\|openpose-editor\|depth-lib\|posex/d' defmix_v2_webui_colab.ipynb
+      
+      - name: Delete aria2c_lines.txt
+        run: |
+          rm tmp/aria2c_lines.txt
+          
+      - name: Pull Changes
+        run: git pull
+      
+      - name: Commit Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add defmix_v2_webui_colab.ipynb
+          git add filenames.txt tmp/aria2c_lines.txt
+          git commit -am "Fishxed it"
+
       - name: Output defmix_v2_webui_colab.ipynb
         run: |
-          sed -i "/!git reset --hard/a\ \ \ \ \ \ \ \ \"model = 'defmix_v2_webui_colab.ipynb' #@param [`cat filenames.txt | sed "s/\(.*\)/'\1',/" | tr -d '\n' | sed 's/,$//'`]\\n/\"," defmix_v2_webui_colab.ipynb
-        shell: bash
-
+          sed -i "/!git reset --hard/a\ \ \ \ \ \ \ \ \"model = 'defmix_v2_webui_colab.ipynb' #@param [`cat filenames.txt | sed "s/\(.*\)/'\1',/" | tr -d '\n' | sed 's/,$//'`]\"," defmix_v2_webui_colab.ipynb
+        shell: bash   
+    
       - name: Commit Changes
         run: |
           git config --local user.email "action@github.com"
