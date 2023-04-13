@@ -31,16 +31,6 @@ jobs:
               fi
                 curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed 's/^/        /'
           done < filenames.txt >> tmp/aria2c_lines.txt
-      
-      - name: Pull Changes
-        run: git pull
-      
-      - name: Commit Changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add filenames.txt tmp/aria2c_lines.txt
-          git commit -am "Fishxed it"
           
       - name: Download Colab File
         run: wget -O defmix_v2_webui_colab.ipynb https://github.com/camenduru/stable-diffusion-webui-colab/raw/main/nightly/defmix_v2_webui_colab.ipynb
@@ -50,16 +40,6 @@ jobs:
 
       - name: Replace Colab notebook URL
         run: sed -i 's~https://colab\.research\.google\.com/github/camenduru/stable-diffusion-webui-colab/blob/main/nightly/defmix_v2_webui_colab\.ipynb~https://colab.research.google.com/github/2Cuu/SdWebui/blob/main/defmix_v2_webui_colab.ipynb~' defmix_v2_webui_colab.ipynb
-
-      - name: Pull Changes
-        run: git pull
-      
-      - name: Commit Changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add defmix_v2_webui_colab.ipynb
-          git commit -am "Fishxed it"
           
       - name: Output defmix_v2_webui_colab.ipynb
         run: |
@@ -74,6 +54,8 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git add defmix_v2_webui_colab.ipynb
+          git add filenames.txt tmp/aria2c_lines.txt
           git commit -am "Add model name to defmix_v2_webui_colab.ipynb"
           git push
       
