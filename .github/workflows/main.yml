@@ -59,7 +59,7 @@ jobs:
             git config --local user.name "GitHub Action"
             git add webui_colab.ipynb
             git add filenames.txt tmp/aria2c_lines.txt
-            git commit --allow-empty -am "Update check"
+            git commit -am "Update check"
             git push
           else
             echo "No changes to commit"
