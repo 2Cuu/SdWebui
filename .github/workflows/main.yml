@@ -29,7 +29,7 @@ jobs:
               else
                 echo "        \"elif model == '$filename':\\n\","
               fi
-                curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed -i 's/"!aria2c/"    !aria2c/g'
+                curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed 's/"!aria2c/"    !aria2c/g'
           done < filenames.txt >> tmp/aria2c_lines.txt
           
       - name: Download Colab File
