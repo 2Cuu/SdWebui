@@ -58,7 +58,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add webui_colab.ipynb
           git add filenames.txt tmp/aria2c_lines.txt
-          git commit -am "Add model name to webui_colab.ipynb"
+          git commit -am "Update check"
           git push
       
       - name: Push Changes
