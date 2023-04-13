@@ -1,8 +1,8 @@
 name: Output defmix_v2_webui_colab.ipynb workflow
 
 on:
-  push:
-    branches: [main]
+  schedule:
+    - cron: '0 0 * * *' # Run every hour
 
 jobs:
   build:
