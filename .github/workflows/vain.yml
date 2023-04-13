@@ -13,7 +13,7 @@ jobs:
       - name: Read Filenames
         id: filenames
         run: |
-          echo "::set-output name=filenames::$(cat filenames.txt | paste -sd ',' - | sed "s/\"/'/g")"
+          echo "::set-output name=filenames::$(cat filenames.txt | paste -sd ',' -)"
       - name: Add Model Name
         run: |
           sed -i '/!git reset --hard/a \ \ \ \ \ \ \ \ \"model = \'defmix_v2_webui_colab.ipynb\' #@param ['\''$(sed -E '\''s/$/,'\'\'' filenames.txt | tr -d '\''\n'\'')'\'']\"' defmix_v2_webui_colab.ipynb
