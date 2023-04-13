@@ -15,13 +15,13 @@ jobs:
 
       - name: Append text to defmix_v2_webui_colab.ipynb
         run: |
-          sed -i '/model =/ r Sdwebui/tmp/aria2c_lines.txt' SdWebui/defmix_v2_webui_colab.ipynb
+          sed -i '/model =/ r tmp/aria2c_lines.txt' defmix_v2_webui_colab.ipynb
 
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add SdWebui/defmix_v2_webui_colab.ipynb
+          git add defmix_v2_webui_colab.ipynb
           git commit -m "Update webui with aria2c lines"
           git push
 
