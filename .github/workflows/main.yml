@@ -24,12 +24,12 @@ jobs:
           first=true
           while read -r filename; do
               if [ "$first" = true ]; then
-                echo "if model == \"$filename\":"
+                echo "\"if model == '$filename':\""
                 first=false
               else
-                echo "elif model == \"$filename\":"
+                echo "\"elif model == '$filename':\""
               fi
-                curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed 's/^/        /' | sed 's/"//' | sed 's/\\n",//'
+                curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed 's/^/        /'
           done < filenames.txt >> tmp/aria2c_lines.txt
       
       - name: Pull Changes
