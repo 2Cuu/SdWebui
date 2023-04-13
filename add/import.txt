@@ -1,4 +1,8 @@
         "\n",
+        "import os\n",
+        "from IPython.display import clear_output \n",
+        "import sys\n",
+        "\n",
         "justrun = False  # @param {type:\"boolean\"}\n",
         "drive = True  # @param {type:\"boolean\"}\n",
         "AllLora = True  # @param {type:\"boolean\"}\n",
