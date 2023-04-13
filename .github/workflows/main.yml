@@ -41,9 +41,13 @@ jobs:
       - name: Replace Colab notebook URL
         run: sed -i 's~https://colab\.research\.google\.com/github/camenduru/stable-diffusion-webui-colab/blob/main/nightly/defmix_v2_webui_colab\.ipynb~https://colab.research.google.com/github/2Cuu/SdWebui/blob/main/defmix_v2_webui_colab.ipynb~' defmix_v2_webui_colab.ipynb
           
+      - name: Replace Lines
+        run: |
+          sed -i 's|models/Stable-diffusion -o|'"here\n"'|g' defmix_v2_webui_colab.ipynb
+          
       - name: Output defmix_v2_webui_colab.ipynb
         run: |
-          sed -i "/!git reset --hard/a\ \ \ \ \ \ \ \ \"model = 'defmix_v2_webui_colab.ipynb' #@param [`cat filenames.txt | sed "s/\(.*\)/'\1',/" | tr -d '\n' | sed 's/,$//'`]\"," defmix_v2_webui_colab.ipynb
+          sed -i "/"here"/a\ \ \ \ \ \ \ \ \"model = 'defmix_v2_webui_colab.ipynb' #@param [`cat filenames.txt | sed "s/\(.*\)/'\1',/" | tr -d '\n' | sed 's/,$//'`]\"," defmix_v2_webui_colab.ipynb
         shell: bash   
 
       - name: Append text to defmix_v2_webui_colab.ipynb
