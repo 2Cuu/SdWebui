@@ -8,7 +8,9 @@ abyss_orange_mix_2_webui_colab.ipynb
 abyss_orange_mix_3_webui_colab.ipynb
 alfamix_webui_colab.ipynb
 all_in_one_pixel_model_webui_colab.ipynb
+amixx_webui_colab.ipynb
 analog_diffusion_webui_colab.ipynb
+anime_pastel_dream_webui_colab.ipynb
 anireality_mix_webui_colab.ipynb
 anylora_webui_colab.ipynb
 anything_3_webui_colab.ipynb
@@ -21,15 +23,20 @@ berry_mix_1_5_webui_colab.ipynb
 cafe_instagram_v6_webui_colab.ipynb
 cetus_mix_v3_1_webui_colab.ipynb
 cheese_daddys_landscapes_mix_webui_colab.ipynb
+cheesed_out_anime_webui_colab.ipynb
 chillout_mix_webui_colab.ipynb
+chillout_nebula_webui_colab.ipynb
 cinematic_diffusion_webui_colab.ipynb
 color_bomb_mix_webui_colab.ipynb
 comic_diffusion_v2_webui_colab.ipynb
 comics_blend_webui_colab.ipynb
 complex_lineart_webui_colab.ipynb
 cool_japan_diffusion_2_1_webui_colab.ipynb
+cornflower_stylized_webui_colab.ipynb
 counterfeit_v2_0_webui_colab.ipynb
 cyberpunk_anime_diffusion_webui_colab.ipynb
+cyberrealistic_webui_colab.ipynb
+dainty_mix_webui_colab.ipynb
 dark_sushi_mix_mix_webui_colab.ipynb
 defmix_v2_webui_colab.ipynb
 deliberate_webui_colab.ipynb
@@ -61,6 +68,8 @@ lucky_strike_mix_webui_colab.ipynb
 magical_mix_v1_webui_colab.ipynb
 magical_mix_v2_webui_colab.ipynb
 mare_coloris_webui_colab.ipynb
+mcq_ani_webui_colab.ipynb
+mcq_webui_colab.ipynb
 meina_mix_v8_webui_colab.ipynb
 midjourney_v4_diffusion_webui_colab.ipynb
 mo_di_diffusion_webui_colab.ipynb
@@ -113,6 +122,7 @@ stable_diffusion_v2_inpainting_webui_colab.ipynb
 stable_diffusion_v2_webui_colab.ipynb
 stable_diffusion_webui_colab.ipynb
 stablydiffuseds_aesthetic_mix_webui_colab.ipynb
+starlike_webui_colab.ipynb
 sukiyaki_mix_v1_webui_colab.ipynb
 synthwave_punk_v2_webui_colab.ipynb
 uber_realistic_merge_webui_colab.ipynb
