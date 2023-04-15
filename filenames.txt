@@ -13,6 +13,7 @@ amixx_webui_colab.ipynb
 analog_diffusion_webui_colab.ipynb
 anime_pastel_dream_webui_colab.ipynb
 anireality_mix_webui_colab.ipynb
+any_hentai_webui_colab.ipynb
 anylora_webui_colab.ipynb
 anything_3_webui_colab.ipynb
 anything_4_webui_colab.ipynb
@@ -78,6 +79,7 @@ mcq_ani_webui_colab.ipynb
 mcq_webui_colab.ipynb
 meina_mix_v8_webui_colab.ipynb
 midjourney_v4_diffusion_webui_colab.ipynb
+mistoon_anime_webui_colab.ipynb
 mo_di_diffusion_webui_colab.ipynb
 monstermash_any_3_webui_colab.ipynb
 mousey_mix_webui_colab.ipynb
