@@ -1,7 +1,8 @@
 name: ColabUpdate
 on:
-  schedule:
-    - cron: '0 0 * * *'
+  push:
+    branches:
+      - master
       
 jobs:
   remove-keywords:
@@ -9,32 +10,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
-      - name: Delete aria2c_lines.txt
-        run: |
-          rm tmp/aria2c_lines.txt
-      - name: Get file names
-        run: |
-          curl -s https://api.github.com/repos/camenduru/stable-diffusion-webui-colab/contents/nightly | grep "name" | cut -d '"' -f 4 > filenames.txt
-      - name: Get lines containing "models/Stable-diffusion -o"
-        run: |
-          mkdir -p tmp
-          first=true
-          while read -r filename; do
-              if [ "$first" = true ]; then
-                echo "        \"if model == '$filename':\\n\","
-                first=false
-              else
-                echo "        \"elif model == '$filename':\\n\","
-              fi
-                curl -s "https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-colab/main/nightly/$filename" | grep "models/Stable-diffusion -o" | sed 's/"!aria2c/"    !aria2c/'
-          done < filenames.txt >> tmp/aria2c_lines.txt
-          
+ 
       - name: Download Colab File
         run: wget -O webui_colab.ipynb https://github.com/camenduru/stable-diffusion-webui-colab/raw/main/nightly/defmix_v2_webui_colab.ipynb
 
       - name: Remove Keywords
-        run: sed -i '/controlnet\|models\/Stable-diffusion -o\|run_n_times\|nonnonstop\|sd-webui-additional-networks\|openpose-editor\|depth-lib\|posex/d' webui_colab.ipynb
+        run: sed -i '/controlnet\|models\/Stable-diffusion -o\|nonnonstop\|sd-webui-additional-networks\|openpose-editor\|depth-lib\|posex/d' webui_colab.ipynb
 
       - name: Replace Colab notebook URL
         run: sed -i 's~https://colab\.research\.google\.com/github/camenduru/stable-diffusion-webui-colab/blob/main/nightly/defmix_v2_webui_colab\.ipynb~https://colab.research.google.com/github/2Cuu/SdWebui/blob/main/webui_colab.ipynb~' webui_colab.ipynb
@@ -44,13 +25,11 @@ jobs:
           sed -i '/"id": "SaAJk33ppFw1"/a\ \ \ \ "cellView": "form"' webui_colab.ipynb
           sed -i '/SaAJk33ppFw1/s/$/,/' webui_colab.ipynb
           sed -i '/TF_CPP_MIN_LOG_LEVEL/ r add/import.txt' webui_colab.ipynb
-          sed -i "/TF_CPP_MIN_LOG_LEVEL/a \ \ \ \ \ \ \ \ \"model = 'defmix_v2_webui_colab.ipynb' #@param [`cat filenames.txt | sed "s/\(.*\)/'\1',/" | tr -d '\n' | sed 's/,$//'`]\"," webui_colab.ipynb
         shell: bash   
 
       - name: Append text to webui_colab.ipynb
         run: |
           sed -i '/git reset --hard/ r add/import2.txt' webui_colab.ipynb
-          sed -i '/git reset --hard/ r tmp/aria2c_lines.txt' webui_colab.ipynb
           
       - name: Commit Changes
         run: |
@@ -58,7 +37,6 @@ jobs:
             git config --local user.email "action@github.com"
             git config --local user.name "GitHub Action"
             git add webui_colab.ipynb
-            git add filenames.txt tmp/aria2c_lines.txt
             git commit -am "Update check"
             git push
           else
