@@ -5,6 +5,7 @@
         "!mv /content/stable-diffusion-webui/embeddings/sdwebuisettings/config.json /content/stable-diffusion-webui/config.json\n",
         "\n",
         "if AllLora:\n",
+        "  !mkdir /content/stable-diffusion-webui/models/Lora\n",
         "  !git lfs install\n",
         "  %cd /content/stable-diffusion-webui/models/Lora\n",
         "  !git clone https://2Cuu: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@huggingface.co/2Cuu/Lora\n",
