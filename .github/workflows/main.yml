@@ -18,7 +18,7 @@ jobs:
       - name: Remove Keywords
         run: |
           sed -i '/controlnet\|stable-diffusion-webui-huggingface\|models\/Stable-diffusion -o\|nonnonstop\|sd-webui-additional-networks\|openpose-editor\|depth-lib\|posex/d' webui_colab.ipynb
-          sed -i '/^!git clone https:\/\/huggingface\.co\/embed\/negative \/content\/stable-diffusion-webui\/embeddings\/negative/d; /^!git clone https:\/\/huggingface\.co\/embed\/lora \/content\/stable-diffusion-webui\/models\/Lora\/positive/d' file.txt
+          sed -i '/^!git clone https:\/\/huggingface\.co\/embed\/negative \/content\/stable-diffusion-webui\/embeddings\/negative/d; /^!git clone https:\/\/huggingface\.co\/embed\/lora \/content\/stable-diffusion-webui\/models\/Lora\/positive/d' webui_colab.ipynb
 
       - name: Replace Colab notebook URL
         run: sed -i 's~https://colab\.research\.google\.com/github/camenduru/stable-diffusion-webui-colab/blob/main/nightly/defmix_v2_webui_colab\.ipynb~https://colab.research.google.com/github/2Cuu/SdWebui/blob/main/webui_colab.ipynb~' webui_colab.ipynb
