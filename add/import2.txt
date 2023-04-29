@@ -12,5 +12,5 @@
         "%cd /content/stable-diffusion-webui\n",
         "clear_output()\n",
         "\n",
-        "!aria2c --console-log-level=error -c -x 16 -s 16 -k 1M {model} -d /content/table-diffusion-webui/models/table-diffusion"
+        "!aria2c --console-log-level=error -c -x 16 -s 16 -k 1M {model} -d /content/table-diffusion-webui/models/table-diffusion\n",
         "\n",
