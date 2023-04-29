@@ -16,7 +16,7 @@ jobs:
         run: wget -O webui_colab.ipynb https://github.com/camenduru/stable-diffusion-webui-colab/raw/main/nightly/defmix_v2_webui_colab.ipynb
 
       - name: Remove Keywords
-        run: sed -i '/controlnet\|stable-diffusion-webui-huggingface\|\/embed\/lora\|\/embed\/negative\|models\/Stable-diffusion -o\|nonnonstop\|sd-webui-additional-networks\|openpose-editor\|depth-lib\|posex/d' webui_colab.ipynb
+        run: sed -i '/controlnet\|stable-diffusion-webui-huggingface\|/embed/lora\|/embed/negative\|models\/Stable-diffusion -o\|nonnonstop\|sd-webui-additional-networks\|openpose-editor\|depth-lib\|posex/d' webui_colab.ipynb
 
       - name: Replace Colab notebook URL
         run: sed -i 's~https://colab\.research\.google\.com/github/camenduru/stable-diffusion-webui-colab/blob/main/nightly/defmix_v2_webui_colab\.ipynb~https://colab.research.google.com/github/2Cuu/SdWebui/blob/main/webui_colab.ipynb~' webui_colab.ipynb
