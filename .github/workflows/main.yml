@@ -3,7 +3,7 @@ name: ColabUpdate
 on:
   push:
     branches:
-      - master
+      - main
       
 jobs:
   remove-keywords:
