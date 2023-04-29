@@ -17,7 +17,7 @@ jobs:
 
       - name: Remove Keywords
         run: |
-          sed -i '/controlnet\|stable-diffusion-webui-huggingface\|deforum-art\|models\/Stable-diffusion -o\|nonnonstop\|sd-webui-additional-networks\|openpose-editor\|depth-lib\|posex/d' webui_colab.ipynb
+          sed -i '/controlnet\|stable-diffusion-webui-rembg\|stable-diffusion-webui-two-shot\|stable-diffusion-webui-huggingface\|deforum-art\|models\/Stable-diffusion -o\|nonnonstop\|sd-webui-additional-networks\|openpose-editor\|depth-lib\|posex/d' webui_colab.ipynb
           sed -i '/!git clone https:\/\/huggingface\.co\/embed\/negative \/content\/stable-diffusion-webui\/embeddings\/negative/d' webui_colab.ipynb
           sed -i '/!git clone https:\/\/huggingface\.co\/embed\/lora \/content\/stable-diffusion-webui\/models\/Lora\/positive/d' webui_colab.ipynb
          
