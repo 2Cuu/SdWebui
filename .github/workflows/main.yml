@@ -2,7 +2,7 @@ name: ColabUpdate
 
 on:
   schedule:
-    - cron: '0/5 * * * *'
+    - cron: '0 * * * *'
       
 jobs:
   remove-keywords:
