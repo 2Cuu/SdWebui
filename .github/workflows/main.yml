@@ -33,6 +33,7 @@ jobs:
       - name: Append text to webui_colab.ipynb
         run: |
           sed -i '/git reset --hard/ r add/import2.txt' webui_colab.ipynb
+          sed -i 's/!python launch.py/!python launch.py --no-half-vae/g' webui_colab.ipynb
           
       - name: Commit Changes
         run: |
