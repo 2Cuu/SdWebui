@@ -15,6 +15,6 @@
         "clear_output()\n",
         "\n",
         "!aria2c --console-log-level=error -c -x 16 -s 16 -k 1M {model} -d /content/stable-diffusion-webui/models/Stable-diffusion\n",
-        "model = \"https://civitai.com/api/download/models/26689\"\n",
+        "model = \"https://civitai.com/api/download/models/62228\"\n",
         "!aria2c --console-log-level=error -c -x 16 -s 16 -k 1M {model} -d /content/stable-diffusion-webui/models/VAE\n",
         "\n",
