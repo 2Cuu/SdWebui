@@ -1,6 +1,7 @@
         "\n",
         "!aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/Akumetsu971/SD_Anime_Futuristic_Armor/resolve/main/4x_fatal_Anime_500000_G.pth -d /content/stable-diffusion-webui/models/ESRGAN -o 4x_fatal_Anime_500000_G.pth\n",
         "!git clone https://github.com/adieyal/sd-dynamic-prompts /content/stable-diffusion-webui/extensions/sd-dynamic-prompts\n",
+        "!git clone https://github.com/Bing-su/adetailer /content/stable-diffusion-webui/extensions/adetailer\n",
         "%cd /content/stable-diffusion-webui/embeddings\n",
         "!git lfs install\n",
         "!git clone https://huggingface.co/datasets/2Cuu/sdwebuisettings\n",
