@@ -34,7 +34,12 @@ jobs:
         run: |
           sed -i '/git reset --hard/ r add/import2.txt' webui_colab.ipynb
           sed -i 's/!python launch.py/!python launch.py --no-half-vae/g' webui_colab.ipynb
-          
+
+      - name: SDColabFix
+        run: |
+          sed -i '/TF_CPP_MIN_LOG_LEVEL/ r add/import3.txt' webui_colab.ipynb
+        shell: bash
+
       - name: Commit Changes
         run: |
           if [[ $(git status --short) ]]; then
