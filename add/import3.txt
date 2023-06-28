@@ -1,0 +1,5 @@
+"\n",
+"repl1 = \"tab\"\n",
+"repl2 = \"d-\"\n",
+"repl3 = \"fusion\"\n",
+"\n",
