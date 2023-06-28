@@ -38,7 +38,6 @@ jobs:
       - name: SDColabFix
         run: |
           sed -i '/TF_CPP_MIN_LOG_LEVEL/ r add/import3.txt' webui_colab.ipynb
-        shell: bash
 
       - name: Commit Changes
         run: |
