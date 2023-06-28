@@ -1,13 +1,13 @@
 name: ColabUpdate
 
-#on:
-#  schedule:
-#    - cron: '30 */8 * * *'
-
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '30 */8 * * *'
+
+#on:
+#  push:
+#   branches:
+#      - main
  
 jobs:
   remove-keywords:
